@@ -39,6 +39,7 @@ In this assignment, you'll create a web app that lets users view and leave comme
     * `heroku config | grep MONGODB_URI`
 
     * Notice the value that appears after `MONGODB_URI =>`. This is your URI string. Copy it to a document for safekeeping.
+mongodb://heroku_v89pdsk7:ol2lhhf5ejamqn3p81kmc9mnhs@ds231725.mlab.com:31725/heroku_v89pdsk7
 
 14. When you’re ready to connect Mongoose with your remote database, you'll need to add it as an [environment variable on Heroku](https://devcenter.heroku.com/articles/config-vars)
 
