@@ -19,6 +19,11 @@ var app = express();
 
 // Configure middleware
 
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
 // Use morgan logger for logging requests
 app.use(logger("dev"));
 // Use body-parser for handling form submissions
@@ -30,14 +35,15 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
 mongoose.connect(
-  // "mongodb://localhost/mongoscraper"
-  "mongodb://heroku_v89pdsk7:ol2lhhf5ejamqn3p81kmc9mnhs@ds231725.mlab.com:31725/heroku_v89pdsk7", {
+  "mongodb://localhost/mongoscraper"
+  // "mongodb://heroku_v89pdsk7:ol2lhhf5ejamqn3p81kmc9mnhs@ds231725.mlab.com:31725/heroku_v89pdsk7"
+  , {
   useMongoClient: true
 });
 
 // Routes
 
-// A GET route for scraping the echojs website
+// A GET route for scraping the nyt website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
   axios.get("https://www.nytimes.com/").then(function(response) {
@@ -63,6 +69,7 @@ app.get("/scrape", function(req, res) {
 
       // Create a new Article using the `result` object built from scraping
       db.Article
+        // .findOne({title:result.title})
         .create(result)
         .then(function(dbArticle) {
           // If we were able to successfully scrape and save an Article, send a message to the client
@@ -83,7 +90,21 @@ app.get("/articles", function(req, res) {
     .find({})
     .then(function(dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
-      res.json(dbArticle);
+      // res.json(dbArticle);
+      // console.log(dbArticle);
+  var data = {
+    arts: []
+  };
+
+  for (var i = 0; i < dbArticle.length; i += 1) {
+    // Get the current animal.
+    var currArticle = dbArticle[i];
+
+      data.arts.push(currArticle);
+ 
+  }
+      console.log(data);
+      res.render("index",data);
     })
     .catch(function(err) {
       // If an error occurred, send it to the client

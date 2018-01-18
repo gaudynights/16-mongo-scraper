@@ -1,0 +1,12 @@
+{{!-- <p>index page</p> --}}
+
+<ul>
+  {{#each arts}}
+    <li data-id={{_id}}>
+      <h3>{{title}}</h3>
+      {{!-- <p>{{link}}</p> --}}
+      <p>summary: {{summary}}</p>
+    </li>
+  {{/each}}
+</ul>
+
